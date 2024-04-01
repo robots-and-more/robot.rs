@@ -10,5 +10,4 @@ members = [
   "robot-rs-wpilib-sys",
   "robot-rs-units",
   "robot-rs-macros",
-  "ctre",
 ]

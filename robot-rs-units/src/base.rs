@@ -2,31 +2,31 @@ use std::f64::consts::PI;
 
 use typenum::{P1, Z0};
 
-use super::{Quantity, QuantityBase, Unit, ISQ};
 use crate::unit;
+use super::{Unit, Quantity, ISQ, QuantityBase};
 
 // Base Units
-pub type Unitless = Quantity<ISQ<Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0>>;
-pub type Time = Quantity<ISQ<P1, Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0>>;
-pub type Length = Quantity<ISQ<Z0, P1, Z0, Z0, Z0, Z0, Z0, Z0, Z0>>;
-pub type Mass = Quantity<ISQ<Z0, Z0, P1, Z0, Z0, Z0, Z0, Z0, Z0>>;
-pub type Current = Quantity<ISQ<Z0, Z0, Z0, P1, Z0, Z0, Z0, Z0, Z0>>;
-pub type Temperature = Quantity<ISQ<Z0, Z0, Z0, Z0, P1, Z0, Z0, Z0, Z0>>;
-pub type Molarity = Quantity<ISQ<Z0, Z0, Z0, Z0, Z0, P1, Z0, Z0, Z0>>;
-pub type LuminousIntensity = Quantity<ISQ<Z0, Z0, Z0, Z0, Z0, Z0, P1, Z0, Z0>>;
-pub type Angle = Quantity<ISQ<Z0, Z0, Z0, Z0, Z0, Z0, Z0, P1, Z0>>;
-pub type Ticks = Quantity<ISQ<Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0, P1>>;
+pub type Unitless           = Quantity<ISQ<Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0>>;
+pub type Time               = Quantity<ISQ<P1, Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0>>;
+pub type Length             = Quantity<ISQ<Z0, P1, Z0, Z0, Z0, Z0, Z0, Z0, Z0>>;
+pub type Mass               = Quantity<ISQ<Z0, Z0, P1, Z0, Z0, Z0, Z0, Z0, Z0>>;
+pub type Current            = Quantity<ISQ<Z0, Z0, Z0, P1, Z0, Z0, Z0, Z0, Z0>>;
+pub type Temperature        = Quantity<ISQ<Z0, Z0, Z0, Z0, P1, Z0, Z0, Z0, Z0>>;
+pub type Molarity           = Quantity<ISQ<Z0, Z0, Z0, Z0, Z0, P1, Z0, Z0, Z0>>;
+pub type LuminousIntensity  = Quantity<ISQ<Z0, Z0, Z0, Z0, Z0, Z0, P1, Z0, Z0>>;
+pub type Angle              = Quantity<ISQ<Z0, Z0, Z0, Z0, Z0, Z0, Z0, P1, Z0>>;
+pub type Ticks              = Quantity<ISQ<Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0, P1>>;
 
 impl From<f64> for Unitless {
-    fn from(value: f64) -> Self {
-        Unitless::new::<ratio>(value)
-    }
+  fn from(value: f64) -> Self {
+    Unitless::new::<ratio>(value)
+  }
 }
 
 impl From<Unitless> for f64 {
-    fn from(value: Unitless) -> Self {
-        value.base_unit_value
-    }
+  fn from(value: Unitless) -> Self {
+    value.base_unit_value
+  }
 }
 
 unit!(Unitless, ratio, 1.0, 0.0);
@@ -64,25 +64,25 @@ unit!(Ticks, tick, 1.0, 0.0);
 
 #[cfg(test)]
 mod tests {
-    use std::f64::consts::PI;
+  use std::f64::consts::PI;
 
-    use approx::assert_relative_eq;
+  use approx::assert_relative_eq;
 
-    use crate::base::*;
+  use crate::base::*;
 
-    #[test]
-    fn test_singles() {
-        // Just test a few choice things
-        assert_relative_eq!(1.0 * second, 1.0 * second);
-        assert_relative_eq!(1e-3 * second, 1.0 * millisecond);
-        assert_relative_eq!(1e-6 * second, 1.0 * microsecond);
-        assert_relative_eq!(1e-9 * second, 1.0 * nanosecond);
+  #[test]
+  fn test_singles() {
+    // Just test a few choice things
+    assert_relative_eq!(1.0 * second, 1.0 * second);
+    assert_relative_eq!(1e-3 * second, 1.0 * millisecond);
+    assert_relative_eq!(1e-6 * second, 1.0 * microsecond);
+    assert_relative_eq!(1e-9 * second, 1.0 * nanosecond);
 
-        assert_relative_eq!(1.0 * inch, 25.4 * millimeter);
-        assert_relative_eq!(12.0 * inch, 1.0 * foot);
+    assert_relative_eq!(1.0 * inch, 25.4 * millimeter);
+    assert_relative_eq!(12.0 * inch, 1.0 * foot);
 
-        assert_eq!(0.0 * celsius, 273.15 * kelvin);
+    assert_eq!(0.0 * celsius, 273.15 * kelvin);
 
-        assert_eq!(2.0 * PI * radian, 360.0 * degree);
-    }
+    assert_eq!(2.0 * PI * radian, 360.0 * degree);
+  }
 }

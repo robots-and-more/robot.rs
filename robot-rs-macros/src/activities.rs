@@ -3,7 +3,7 @@ use proc_macro2::Span;
 use quote::quote;
 
 pub fn impl_perform_for_tuple(_item: TokenStream) -> TokenStream {
-    let inner = (1..=12).map(|n| {
+  let inner = (1..=12).map(|n| {
     let range: Vec<usize> = (0..n).collect();
     let trait_ident = syn::Ident::new(&format!("TuplePerform{}", n), Span::call_site());
     let types: Vec<syn::Ident> = range.iter().map(|i| syn::Ident::new(&format!("T{}", i), Span::call_site())).collect();
@@ -36,12 +36,12 @@ pub fn impl_perform_for_tuple(_item: TokenStream) -> TokenStream {
       #[async_trait::async_trait]
       impl<#(#types: Send + 'static),*> #trait_ident for (#(Arc<System<#types>>,)*) {
         #(type #types = #types;)*
-
+        
         async fn perform<O: Send, F>(self, priority: Priority, f: F) -> Option<O>
           where F: for<'a> FnOnce( (#(&'a mut Self::#types),*) ) -> Pin<Box<dyn Future<Output = O> + 'a + Send>> + Send
         {
           let channels = ( #(#channels,)* );
-
+          
           let mut vals = {
             let mut locks = (#(self.#is.storage.lock().await,)*);
 
@@ -65,11 +65,11 @@ pub fn impl_perform_for_tuple(_item: TokenStream) -> TokenStream {
           }
         }
       }
-    }
+    } 
   });
-
-    let q = quote! {
-      #(#inner)*
-    };
-    q.into()
+  
+  let q = quote! {
+    #(#inner)*
+  };
+  q.into()
 }

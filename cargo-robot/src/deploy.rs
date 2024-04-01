@@ -170,7 +170,7 @@ impl DeployCommand {
     let mut library_paths = vec![];
 
     for package in &meta.packages {
-      if let Some(meta) = package.metadata.as_object() {
+      if let Some(_meta) = package.metadata.as_object() {
         let (_header_dirs, _link_dirs, runtime_dirs) = maybe_download_libs(package, "arm-unknown-linux-gnueabi", profile)
           .map_err(|e| Error::new("Failed to Download and Extract Dependency Libs").with_remediation("Try running `cargo robot prepare` to download files ahead of time").with_specifics(format!("Error: {}", e)))?;
 

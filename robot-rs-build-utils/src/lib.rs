@@ -110,6 +110,7 @@ pub fn maybe_download_libs(package: &Package, target: &str, profile: Profile) ->
           if !no_headers {
             let extracted_dir = try_download_and_extract(&headers_url, &download_folder.join(header_fragment), &robot_rs_dir)?;
             header_dirs.push(extracted_dir)
+          } else {
           }
         }
       },
@@ -120,6 +121,7 @@ pub fn maybe_download_libs(package: &Package, target: &str, profile: Profile) ->
 }
 
 fn try_download_and_extract(url: &str, target_path: &Path, robot_rs_dir: &Path) -> Result<PathBuf, Box<dyn Error>> {
+  println!("{url}");
   let hash_file = Path::new(&format!("{}.sha256", target_path.as_os_str().to_string_lossy())).to_owned();
   if !hash_file.exists() || !Path::new(target_path).exists() {
     println!("cargo:warning=Downloading: {}", url);
@@ -167,6 +169,7 @@ fn try_download_and_extract(url: &str, target_path: &Path, robot_rs_dir: &Path) 
 }
 
 fn extract(target_path: &Path, extract_path: &Path) -> Result<(), Box<dyn Error>> {
+  println!("{:#?}", target_path);
   let file = std::fs::File::open(target_path)?;
   let mut zip = zip::ZipArchive::new(file)?;
 
@@ -197,7 +200,7 @@ pub fn link_against(target: &str, linktime_dirs: Vec<PathBuf>) -> Result<(), Box
       let path = path?;
       let filename = path.file_name();
       let filename = filename.to_string_lossy();
-      
+
       match target_platform {
         "windows" => {
           if filename.ends_with(".lib") {

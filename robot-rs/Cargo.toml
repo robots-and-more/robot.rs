@@ -4,10 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [features]
-hal = ["dep:robot-rs-wpilib-sys"]
+native = []
+hal = ["dep:robot-rs-wpilib-sys", "native"]
 ntcore = ["dep:ntcore-rs"]
 simulation = []
-default = ["hal", "ntcore", "simulation"]
+default = ["hal", "ntcore"]
 
 [dependencies]
 approx = "0.5.1"

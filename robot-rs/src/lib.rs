@@ -26,26 +26,26 @@ pub enum RuntimeType {
   Simulation
 }
 
-#[cfg(native)]
+#[cfg(feature = "native")]
 #[macro_export]
 macro_rules! runtime_type {
   () => { RuntimeType::Native };
 }
 
-#[cfg(native)]
+#[cfg(feature = "native")]
 #[macro_export]
 macro_rules! with_runtime {
   (native $b:block) => { $b };
   (simulation $b:block) => {};
 }
 
-#[cfg(simulation)]
+#[cfg(feature = "simulation")]
 #[macro_export]
 macro_rules! runtime_type {
     () => { RuntimeType::Simulation };
 }
 
-#[cfg(simulation)]
+#[cfg(feature = "simulation")]
 #[macro_export]
 macro_rules! with_runtime {
   (native $b:block) => {};

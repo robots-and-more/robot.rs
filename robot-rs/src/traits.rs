@@ -1,3 +1,3 @@
 pub trait Wrapper<Inner> {
-  fn eject(self) -> Inner;
+    fn eject(self) -> Inner;
 }

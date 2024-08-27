@@ -4,6 +4,7 @@ use num_traits::Zero;
 
 use super::StatefulTransform;
 
+#[derive(Default)]
 pub struct DifferentiatingTransform<U, Time> {
     pub last_value: Option<(Time, U)>,
 }

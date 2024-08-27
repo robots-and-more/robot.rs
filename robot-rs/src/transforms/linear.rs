@@ -20,8 +20,8 @@ impl<GI: Clone, GO: Clone, I, O> LinearTransform<GI, GO, I, O> {
         fb_gains: &[FB],
     ) -> Self {
         Self {
-            ff_gains: ff_gains.into_iter().cloned().map(Into::into).collect(),
-            fb_gains: fb_gains.into_iter().cloned().map(Into::into).collect(),
+            ff_gains: ff_gains.iter().cloned().map(Into::into).collect(),
+            fb_gains: fb_gains.iter().cloned().map(Into::into).collect(),
             inputs: VecDeque::with_capacity(ff_gains.len()),
             outputs: VecDeque::with_capacity(fb_gains.len()),
         }
@@ -43,7 +43,7 @@ where
     type Output = O;
 
     fn calculate(&mut self, input: I, _time: Time) -> O {
-        if self.ff_gains.len() > 0 {
+        if !self.ff_gains.is_empty() {
             if self.inputs.len() >= self.ff_gains.len() {
                 self.inputs.pop_front();
             }
@@ -65,7 +65,7 @@ where
 
         let output = ff - fb;
 
-        if self.fb_gains.len() > 0 {
+        if !self.fb_gains.is_empty() {
             if self.outputs.len() >= self.fb_gains.len() {
                 self.outputs.pop_front();
             }

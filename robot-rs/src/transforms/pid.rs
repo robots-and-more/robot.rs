@@ -68,7 +68,7 @@ where
     }
 
     pub fn last(&self) -> Option<PIDMeasurement<PV, Output, Time>> {
-        self.last.clone()
+        self.last
     }
 
     pub fn tunable(self, topic: Topic) -> TunablePID<PV, Output, Time> {

@@ -78,7 +78,9 @@ impl NTStruct for f32 {
         "float value".to_owned()
     }
 
-    fn publish_schema(inst: u32) {}
+    fn publish_schema(_inst: u32) {
+        todo!()
+    }
 
     fn write(&self, buf: &mut BytesMut) -> Result<(), Box<dyn Error>> {
         let as_u32 = unsafe { std::mem::transmute::<f32, u32>(*self) };

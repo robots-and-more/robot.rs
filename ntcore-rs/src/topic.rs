@@ -4,9 +4,8 @@ use std::mem::size_of;
 
 use bytes::BytesMut;
 use robot_rs_ntcore_sys::{
-    NT_AddSchema, NT_Entry, NT_GetEntryEx, NT_GetEntryValue, NT_Inst, NT_PubSubOptions, NT_Publish,
-    NT_PublishEx, NT_Publisher, NT_SetEntryValue, NT_Subscribe, NT_Subscriber, NT_Unpublish,
-    NT_Unsubscribe, NT_Value,
+    NT_Entry, NT_GetEntryEx, NT_GetEntryValue, NT_Inst, NT_PubSubOptions, NT_Publish, NT_Publisher,
+    NT_SetEntryValue, NT_Subscribe, NT_Subscriber, NT_Unpublish, NT_Unsubscribe, NT_Value,
 };
 
 use crate::nt_internal::{
@@ -209,7 +208,7 @@ impl Topic {
     pub fn get_type_str(&self) -> String {
         let mut len = 0;
         let buf = unsafe { NT_GetTopicTypeString(self.handle, &mut len) };
-        std::str::from_utf8(unsafe { std::slice::from_raw_parts(buf as *const u8, len as usize) })
+        std::str::from_utf8(unsafe { std::slice::from_raw_parts(buf as *const u8, len) })
             .unwrap()
             .to_owned()
     }

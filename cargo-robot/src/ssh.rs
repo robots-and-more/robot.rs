@@ -92,7 +92,7 @@ impl SSHSession {
 
         let filename = file.file_name().unwrap().to_str().unwrap();
         match (our_hash, their_hash, checksum) {
-            (ours, Some(theirs), true) if &ours[..] == &theirs[..] => {
+            (ours, Some(theirs), true) if ours[..] == theirs[..] => {
                 info!("[SSH] {} up to date!", filename);
             }
             _ => {

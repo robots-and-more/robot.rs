@@ -59,9 +59,9 @@ impl From<NT_Type> for Type {
     }
 }
 
-impl Into<NT_Type> for Type {
-    fn into(self) -> NT_Type {
-        match self {
+impl From<Type> for NT_Type {
+    fn from(val: Type) -> Self {
+        match val {
             Type::Unassigned => NT_Type::NT_UNASSIGNED,
             Type::Boolean => NT_Type::NT_BOOLEAN,
             Type::Double => NT_Type::NT_DOUBLE,
@@ -105,7 +105,7 @@ impl From<NT_Value> for NTValue {
                 std::str::from_utf8(unsafe {
                     std::slice::from_raw_parts(
                         value.data.v_string.str_ as *const u8,
-                        value.data.v_string.len as usize,
+                        value.data.v_string.len,
                     )
                 })
                 .unwrap()
@@ -113,7 +113,7 @@ impl From<NT_Value> for NTValue {
             }),
             NT_Type::NT_RAW => NTValue::Raw({
                 unsafe {
-                    slice::from_raw_parts(value.data.v_raw.data, value.data.v_raw.size as usize)
+                    slice::from_raw_parts(value.data.v_raw.data, value.data.v_raw.size)
                         .into()
                 }
             }),
@@ -121,7 +121,7 @@ impl From<NT_Value> for NTValue {
                 unsafe {
                     slice::from_raw_parts(
                         value.data.arr_boolean.arr,
-                        value.data.arr_boolean.size as usize,
+                        value.data.arr_boolean.size,
                     )
                     .iter()
                     .map(|x| *x != 0)
@@ -132,7 +132,7 @@ impl From<NT_Value> for NTValue {
                 unsafe {
                     slice::from_raw_parts(
                         value.data.arr_double.arr,
-                        value.data.arr_double.size as usize,
+                        value.data.arr_double.size,
                     )
                     .into()
                 }
@@ -141,7 +141,7 @@ impl From<NT_Value> for NTValue {
                 let s_arr = unsafe {
                     slice::from_raw_parts(
                         value.data.arr_string.arr,
-                        value.data.arr_string.size as usize,
+                        value.data.arr_string.size,
                     )
                 };
                 NTValue::StringArray(
@@ -149,7 +149,7 @@ impl From<NT_Value> for NTValue {
                         .iter()
                         .map(|s| {
                             std::str::from_utf8(unsafe {
-                                std::slice::from_raw_parts(s.str_ as *const u8, s.len as usize)
+                                std::slice::from_raw_parts(s.str_ as *const u8, s.len)
                             })
                             .unwrap()
                             .to_owned()

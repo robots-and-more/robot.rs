@@ -38,7 +38,7 @@ pub trait HasSetpoint<SP> {
     fn set_setpoint(&mut self, sp: SP);
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct IdentityTransform<T> {
     phantom: PhantomData<T>,
 }

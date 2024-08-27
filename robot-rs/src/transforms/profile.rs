@@ -210,7 +210,7 @@ where
                 },
             )
         } else {
-            self.setpoint.clone()
+            self.setpoint
         }
     }
 
@@ -354,7 +354,7 @@ where
     type Output = Output;
 
     fn calculate(&mut self, input: Displacement<Vel, Time>, time: Time) -> Self::Output {
-        match self.last_state.clone() {
+        match self.last_state {
             Some(last) => {
                 let next_state = self.profile.calculate(last, time);
                 self.controller.set_setpoint(next_state.displacement);

@@ -32,10 +32,10 @@ unit!(Jerk, feet_per_second3, 0.3048, 0.0);
 unit!(AngularVelocity, rads_per_second, 1.0, 0.0);
 unit!(AngularVelocity, degrees_per_second, PI / 180.0, 0.0);
 unit!(
-    AngularVelocity,
-    revolutions_per_minute,
-    2.0 * PI / 60.0,
-    0.0
+  AngularVelocity,
+  revolutions_per_minute,
+  2.0 * PI / 60.0,
+  0.0
 );
 
 unit!(AngularAcceleration, rads_per_second2, 1.0, 0.0);
@@ -51,22 +51,22 @@ pub type rpm = revolutions_per_minute;
 
 #[cfg(test)]
 mod tests {
-    use approx::assert_relative_eq;
+  use approx::assert_relative_eq;
 
-    use crate::{
-        base::{meter, second},
-        motion::feet_per_second,
-    };
+  use crate::{
+    base::{meter, second},
+    motion::feet_per_second,
+  };
 
-    use super::Velocity;
+  use super::Velocity;
 
-    #[test]
-    fn test_conversions() {
-        let vel: Velocity = (12.0 * meter) / (1.0 * second);
-        assert_relative_eq!(
-            vel,
-            39.3701 * feet_per_second,
-            epsilon = 0.001 * feet_per_second
-        );
-    }
+  #[test]
+  fn test_conversions() {
+    let vel: Velocity = (12.0 * meter) / (1.0 * second);
+    assert_relative_eq!(
+      vel,
+      39.3701 * feet_per_second,
+      epsilon = 0.001 * feet_per_second
+    );
+  }
 }

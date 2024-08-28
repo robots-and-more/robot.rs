@@ -5,41 +5,42 @@ use syn::{parse_macro_input, DeriveInput};
 #[derive(Debug, FromAttributes)]
 #[darling(attributes(nt))]
 struct StructReceiver {
-    type_string_fragment: String,
+  type_string_fragment: String,
 }
 
 #[proc_macro_derive(NTStruct, attributes(nt))]
 pub fn derive_marshal(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    let DeriveInput {
-        attrs,
-        vis: _,
-        ident,
-        generics: _,
-        data,
-    } = parse_macro_input!(input as DeriveInput);
+  let DeriveInput {
+    attrs,
+    vis: _,
+    ident,
+    generics: _,
+    data,
+  } = parse_macro_input!(input as DeriveInput);
 
-    let our_attrs = StructReceiver::from_attributes(&attrs).unwrap();
-    let type_string_fragment = our_attrs.type_string_fragment;
+  let our_attrs = StructReceiver::from_attributes(&attrs).unwrap();
+  let type_string_fragment = our_attrs.type_string_fragment;
 
-    match data {
-        syn::Data::Struct(st) => match st.fields {
-            syn::Fields::Named(named) => {
-                let mut schema = vec![];
-                let mut reads = vec![];
-                let mut writes = vec![];
-                let mut schema_pubs = vec![];
+  match data {
+    syn::Data::Struct(st) => {
+      match st.fields {
+        syn::Fields::Named(named) => {
+          let mut schema = vec![];
+          let mut reads = vec![];
+          let mut writes = vec![];
+          let mut schema_pubs = vec![];
 
-                for field in named.named.into_iter() {
-                    let fty = field.ty;
-                    let fident = field.ident.unwrap();
-                    let fname = fident.to_string();
-                    schema.push(quote!{ schema.push(format!("{} {}", <#fty as NTStruct>::TYPE_STRING_FRAG, #fname)) });
-                    reads.push(quote! { #fident: <#fty as NTStruct>::read(buf)? });
-                    writes.push(quote! { NTStruct::write(&self.#fident, buf)? });
-                    schema_pubs.push(quote! { <#fty as NTStruct>::publish_schema(inst) });
-                }
+          for field in named.named.into_iter() {
+            let fty = field.ty;
+            let fident = field.ident.unwrap();
+            let fname = fident.to_string();
+            schema.push(quote!{ schema.push(format!("{} {}", <#fty as NTStruct>::TYPE_STRING_FRAG, #fname)) });
+            reads.push(quote! { #fident: <#fty as NTStruct>::read(buf)? });
+            writes.push(quote! { NTStruct::write(&self.#fident, buf)? });
+            schema_pubs.push(quote! { <#fty as NTStruct>::publish_schema(inst) });
+          }
 
-                quote! {
+          quote! {
             impl NTStruct for #ident {
               const TYPE_STRING_FRAG: &'static str = #type_string_fragment;
 
@@ -70,9 +71,10 @@ pub fn derive_marshal(input: proc_macro::TokenStream) -> proc_macro::TokenStream
               }
             }
           }.into()
-            }
-            _ => panic!("NTStruct only works on structs with named fields"),
-        },
-        _ => panic!("NTStruct only works on structs!"),
+        }
+        _ => panic!("NTStruct only works on structs with named fields"),
+      }
     }
+    _ => panic!("NTStruct only works on structs!"),
+  }
 }
